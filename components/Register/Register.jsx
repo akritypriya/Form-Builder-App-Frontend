@@ -16,9 +16,12 @@ export default function Register() {
   });
 
   const [error, setError] = useState("");
-
+  const [formSubmitted, setFormSubmitted] = useState(false); // New state to track form submission
+  
   const handleRegister = async (e) => {
     e.preventDefault();
+    setFormSubmitted(true); // Set form submission to true
+
     const { username, email, password, confirmPassword } = formData;
 
     // Password match validation
@@ -100,25 +103,23 @@ export default function Register() {
             />
           </div>
 
-          <div
-            className={`${styles.formPassword} ${
-              formData.password &&
-              formData.confirmPassword &&
-              formData.password !== formData.confirmPassword
-                ? styles.errorBorder
-                : ""
-            }`}
-          >
-            <label
-              htmlFor="confirmPassword"
-              className={`${
-                formData.password &&
-                formData.confirmPassword &&
-                formData.password !== formData.confirmPassword
-                  ? styles.errorLabel
-                  : ""
-              }`}
-            >
+       <div
+        className={`${styles.formPassword} ${
+          formSubmitted &&
+          formData.password !== formData.confirmPassword
+            ? styles.errorBorder
+            : ''
+        }`}
+      >
+        <label
+          htmlFor="confirmPassword"
+          className={`${
+            formSubmitted &&
+            formData.password !== formData.confirmPassword
+              ? styles.errorLabel
+              : ''
+          }`}
+        >
               Confirm Password
             </label>
             <input
@@ -130,7 +131,7 @@ export default function Register() {
                 setFormData({ ...formData, confirmPassword: e.target.value })
               }
             />
-            {error && <p className={styles.error}>{error}</p>}
+            {formSubmitted && error && <p className={styles.error}>{error}</p>}
           </div>
           <button type="submit" className={styles.formButton1}>
             Sign Up

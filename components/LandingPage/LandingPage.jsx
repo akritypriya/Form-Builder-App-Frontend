@@ -50,7 +50,7 @@ function LandingPage() {
      <img src={Footer_container} alt="footer" className={styles.Footer_container} />
      </footer>
     </div>
-  )
+  );
 }
 
-export default LandingPage
+export default LandingPage;

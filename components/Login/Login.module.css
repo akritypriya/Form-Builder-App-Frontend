@@ -3,8 +3,8 @@
 * {
   margin: 0;
   padding: 0;
-  background-color: black;
-  color: white;
+  
+
 }
 .header {
   position: relative;
@@ -12,6 +12,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: black;
+  color: white;
 }
 
 .backButton {
@@ -51,6 +53,7 @@ input {
   width: 20vw;
   height: 2%;
   border: 1px solid #ffffff80;
+  color: white;
 }
 .error {
   color: #522224;

@@ -20,3 +20,13 @@ export const login = (data) => {
         body: JSON.stringify(data),
     })
 }
+//update
+export const update = (data) => {
+    return fetch(`${URL}/user/update`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+}

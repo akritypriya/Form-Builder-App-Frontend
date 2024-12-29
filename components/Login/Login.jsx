@@ -11,7 +11,7 @@ import triangle from "../../assets/triangle.png";
 export default function Login() {
   const navigate = useNavigate();
 
-  // Redirect user if already logged in
+  //Redirect user if already logged in
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -35,6 +35,9 @@ export default function Login() {
       if (res.status === 200) {
         const data = await res.json();
         localStorage.setItem("token", data.token);
+        localStorage.setItem("username", data.username);
+        console.log(data.token);
+        console.log(data.username);
         alert("Logged in successfully");
         navigate("/workspace");
       } else {

@@ -30,3 +30,11 @@ export const update = (data) => {
         body: JSON.stringify(data),
     })
 }
+//user
+// export const userInfo = (token) => {
+//     return fetch(`${URL}/user`, {
+//       headers: {
+//         'Authorization': `Bearer ${token}`,
+//       },
+//     });
+//   };

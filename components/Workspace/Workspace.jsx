@@ -1,13 +1,12 @@
 import styles from './Workspace.module.css';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import folder_img from '../../assets/folder_img.png';
 import delete_img from '../../assets/delete_img.png';
-import React from 'react';
-
+//import { login } from "../../services";
+const API_URL = 'http://localhost:3000';
 function Workspace() {
-  const [selectedValue, setSelectedValue] = useState(); // Header dropdown
-  const [isPopupVisible, setIsPopupVisible] = useState(false); // Popup visibility state
+const [isPopupVisible, setIsPopupVisible] = useState(false); // Popup visibility state
   const [isDarkMode, setIsDarkMode] = useState('isDarkMode'); // Theme toggle state
   const [folders, setFolders] = useState([]); // State to track folders
   const [typebots, setTypebots] = useState([]); // State to track typebots
@@ -19,9 +18,43 @@ function Workspace() {
   const [isDeletePopupVisible, setIsDeletePopupVisible] = useState(false); // Delete popup visibility
   const [selectedFolderIndex, setSelectedFolderIndex] = useState(null);// Folder index to delete
   const [selectedFormIndex, setSelectedFormIndex] = useState(null);// Form index to delete
-  const navigate = useNavigate();
+  const [selectedValue, setSelectedValue] = useState(''); //  dropdown
+  const [userName, setUserName] = useState('');
+ 
 
-  // Handle dropdown change
+  const navigate = useNavigate();
+ 
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      setUserName(storedUsername);
+    } else {
+      const fetchUsername = async () => {
+        const token = localStorage.getItem("token");
+        if (token) {
+          try {
+            const response = await fetch(`${API_URL}/api/user`, {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+            if (response.ok) {
+              const user = await response.json();
+              setUserName(user.name);
+              localStorage.setItem("username", user.name);
+            } else {
+              console.error("Failed to fetch user details.");
+            }
+          } catch (error) {
+            console.error("Error fetching username:", error);
+          }
+        }
+      };
+      fetchUsername();
+    }
+  }, []);
+  
+
+// Handle dropdown change
   const handleChange = (event) => {
     const value = event.target.value;
     setSelectedValue(value);
@@ -29,6 +62,7 @@ function Workspace() {
       navigate(value); // Navigate to the selected dropdown value
     }
   };
+
 
   // Toggle theme
   const toggleTheme = () => {
@@ -91,11 +125,11 @@ function Workspace() {
     setSelectedFormIndex(null);
     setIsDeletePopupVisible(false);
   };
-  const deleteFolder = () => {
-    setFolders((prevFolders) => prevFolders.filter((_, i) => i !== selectedFolderIndex));
-    setTypebots((prevForms) => prevForms.filter((_, i) => i !== selectedFormIndex));
-    closeDeletePopup();
-  };
+  // const deleteFolder = () => {
+  //   setFolders((prevFolders) => prevFolders.filter((_, i) => i !== selectedFolderIndex));
+  //   setTypebots((prevForms) => prevForms.filter((_, i) => i !== selectedFormIndex));
+  //   closeDeletePopup();
+  // };
     
 
 
@@ -114,7 +148,9 @@ function Workspace() {
             onChange={handleChange}
             className={`${styles.select} ${isDarkMode ? styles.darkDropdown : styles.lightDropdown}`}
           >
-            <option value="/workspace" className={styles.doption}>{}'s workspace</option>
+            <option value="/workspace" className={styles.doption}>
+        {userName ? `${userName}'s workspace` : "Loading..."}
+      </option>
             <option value="/settings" className={styles.doption}>Settings</option>
             <option value="/home" className={styles.dlogout}>Log Out</option>
           </select>

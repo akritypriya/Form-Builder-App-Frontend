@@ -43,6 +43,8 @@ export default function Register() {
           confirmPassword: "",
         }); // Reset form
         setError(""); // Clear error
+              // Store JWT token in localStorage
+      localStorage.setItem("token", formData.token);
       } else {
         setError(res.data.message || "Registration failed");
       }

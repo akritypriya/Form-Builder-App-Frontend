@@ -6,9 +6,9 @@ import delete_img from '../../assets/delete_img.png';
 import React from 'react';
 
 function Workspace() {
-  const [selectedValue, setSelectedValue] = useState('/workspace'); // Header dropdown
+  const [selectedValue, setSelectedValue] = useState(); // Header dropdown
   const [isPopupVisible, setIsPopupVisible] = useState(false); // Popup visibility state
-  const [isDarkMode, setIsDarkMode] = useState(false); // Theme toggle state
+  const [isDarkMode, setIsDarkMode] = useState('isDarkMode'); // Theme toggle state
   const [folders, setFolders] = useState([]); // State to track folders
   const [typebots, setTypebots] = useState([]); // State to track typebots
   const [isFolderPopupVisible, setIsFolderPopupVisible] = useState(false); // Folder popup visibility
@@ -39,7 +39,7 @@ function Workspace() {
   // Toggle popup visibility
   const togglePopup = () => {
     setIsPopupVisible(!isPopupVisible);
-    setIsDeletePopupVisible(!isDeletePopupVisible);
+   
   };
 
   // Open folder creation popup
@@ -93,7 +93,7 @@ function Workspace() {
   };
   const deleteFolder = () => {
     setFolders((prevFolders) => prevFolders.filter((_, i) => i !== selectedFolderIndex));
-    // setTypebots((prevForms) => prevForms.filter((_, i) => i !== selectedFormIndex));
+    setTypebots((prevForms) => prevForms.filter((_, i) => i !== selectedFormIndex));
     closeDeletePopup();
   };
     
@@ -114,9 +114,9 @@ function Workspace() {
             onChange={handleChange}
             className={`${styles.select} ${isDarkMode ? styles.darkDropdown : styles.lightDropdown}`}
           >
-            <option value="/workspace">Ram's workspace</option>
-            <option value="/settings">Settings</option>
-            <option value="/home">Log Out</option>
+            <option value="/workspace" className={styles.doption}>{}'s workspace</option>
+            <option value="/settings" className={styles.doption}>Settings</option>
+            <option value="/home" className={styles.dlogout}>Log Out</option>
           </select>
         </div>
 
@@ -195,9 +195,9 @@ function Workspace() {
         </div>
         <div className={styles.formCreation}>
           <button onClick={openFormPopup} className={styles.typebot}>
-            <p className={styles.text}>
+            <p className={styles.typebottext}>
               +
-              <span>Create a Typebot</span>
+              <span className={styles.typebottextline}>Create a Typebot</span>
             </p>
           </button>
           <ul className={styles.typebotList}>
@@ -276,16 +276,16 @@ function Workspace() {
       )}
           {/* Delete Button Popup */}
       {isDeletePopupVisible && (
-        <div className={styles.folderpopup}>
-          <div className={styles.folderpopupContent}>
-            <h3>
-              Are you sure you want to
-              <span>delete this folder?</span>
-            </h3>
-            <div className={styles.buttonContainer}>
-              <button className={styles.button1}>Confirm</button>
-              <div className={styles.borderline}></div>
-              <button className={styles.button2} onClick={closeDeletePopup}>
+        <div className={styles.deletepopup}>
+          <div className={styles.deletepopupContent}>
+            <h2 className={styles.deleteText}>
+              Are you sure you want to delete this folder?
+      
+            </h2>
+            <div className={styles.deletebuttonContainer}>
+              <button className={styles.deletebutton1}>Confirm</button>
+              <div className={styles.deleteborderline}></div>
+              <button className={styles.deletebutton2} onClick={closeDeletePopup}>
                 Cancel
               </button>
             </div>

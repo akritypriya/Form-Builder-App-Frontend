@@ -30,28 +30,33 @@
 .dropdown {
   position: relative;
   padding-left:30%;
+  
 }
 
 /* Dropdown select element */
 .select {
   padding: 8px 150px;
-  border: 1px solid#bbb;
+  border: 1px solid #b0b0b0;
   border-radius: 4px;
   font-size: 14px;
+  text-align: left;  
   
-  
-  
+}
+
+.dlogout{
+  color:#FFA54C;
+
 }
 .lightDropdown {
   background-color: #fff;
   color: #18181B;
-  border: 1px solid#bbb;
+  
 }
 
 .darkDropdown {
   background-color: #18181B;
   color: #fff;
-  border: 1.38px solid#b0b0b0;
+  
 }
 
 /* Toggle switch container */
@@ -63,7 +68,9 @@
  
   
 }
-
+.label{
+  font-family: Open Sans;
+}
 /* Toggle switch */
 .toggleSwitch {
   width: 50px;
@@ -266,15 +273,23 @@ margin-bottom: 25px;
   text-align: center;
 
 }
+.typebottext{
 
-
-p{
+  font-weight: 500;
+  font-size: 45px;
+ 
+}
+.typebottextline{
+  font-size: 13px;
+  margin-top:25px;
+}
+.headline{
   font-weight: 500;
   font-size: 50px;
   margin-top:15px;
   
 }
-p > span{
+.headlineSpan{
   font-family: Open Sans;
 font-size: 12px;
 font-weight: 400;
@@ -347,6 +362,7 @@ margin-top: 30px;
   height: 40px; /* Ensure the height matches the folderItem */
   padding: 4px;
 }
+
 .typebotItem {
   background-color: #f0f0f0;
   color: #000;
@@ -391,8 +407,8 @@ button {
 
 
 
- /* Folder Popup styles */
- .folderpopup {
+ /* Folder & delete Popup styles */
+ .folderpopup,.deletepopup {
   position: fixed;
   top: 0;
   left: 0;
@@ -407,7 +423,7 @@ button {
   
 }
 
-.folderpopupContent {
+.folderpopupContent,.deletepopupContent {
   background-color: #18181B;
   color: white;
   border-radius: 18px;
@@ -422,7 +438,7 @@ button {
   border: 1px solid #47474A;
 }
 
-.folderpopupContent h3 {
+.folderpopupContent  h3 {
   margin-top: -80px;
   font-family: Open Sans;
 font-size: 27.33px;
@@ -430,6 +446,14 @@ font-weight: 400;
 line-height: 35px;
 margin-bottom: 10px;
 
+}
+.deletepopupContent .deleteText{
+  font-family: Open Sans;
+  font-size: 30px;
+  font-weight: 380;
+  text-align: center;
+  margin-top: -80px;
+  margin-bottom: 40px;
 }
 
 .input {
@@ -446,12 +470,12 @@ margin-bottom: 10px;
 
 
 }
-.buttonContainer{
+.buttonContainer,.deletebuttonContainer{
   display:flex;
   justify-content: space-evenly;
 
 }
-.button1 {
+.button1,.deletebutton1 {
   background-color: #18181B;
   border: none;
   cursor: pointer;
@@ -461,10 +485,10 @@ margin-bottom: 10px;
 
 }
 
-.borderline{
+.borderline,.deleteborderline{
   border: 1px solid #47474A;
 }
-.button2 {
+.button2,.deletebutton2 {
   background-color: #18181B;
   color: white;
   border: none;

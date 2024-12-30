@@ -3,12 +3,14 @@ import { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import folder_img from '../../assets/folder_img.png';
 import delete_img from '../../assets/delete_img.png';
-//import { login } from "../../services";
+import axios from 'axios';
 const API_URL = 'http://localhost:3000';
+
 function Workspace() {
 const [isPopupVisible, setIsPopupVisible] = useState(false); // Popup visibility state
   const [isDarkMode, setIsDarkMode] = useState('isDarkMode'); // Theme toggle state
   const [folders, setFolders] = useState([]); // State to track folders
+  const [files, setFiles] = useState([]);// State to track folders
   const [typebots, setTypebots] = useState([]); // State to track typebots
   const [isFolderPopupVisible, setIsFolderPopupVisible] = useState(false); // Folder popup visibility
   const [isFormPopupVisible, setIsFormPopupVisible] = useState(false); // Form popup visibility
@@ -23,32 +25,52 @@ const [isPopupVisible, setIsPopupVisible] = useState(false); // Popup visibility
  
 
   const navigate = useNavigate();
- 
 
+  
   useEffect(() => {
     const storedUsername = localStorage.getItem("username");
     if (storedUsername) {
       setUserName(storedUsername);
-    } else {
-      const fetchUsername = async () => {
-        const token = localStorage.getItem("token");
-        if (token) {
-          try {
-            const response = await fetch(`${API_URL}/api/user`, {
+    }
+  
+    const savedFolders = JSON.parse(localStorage.getItem("folders"));
+    const savedFiles = JSON.parse(localStorage.getItem("files"));
+  
+    if (savedFolders) setFolders(savedFolders);
+    if (savedFiles) setFiles(savedFiles);
+  
+    // Fetch data from backend if not found in localStorage (if needed)
+    const fetchUsername = async () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        try {
+          const response = await fetch(`${API_URL}/api/user`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+  
+          if (response.ok) {
+            const user = await response.json();
+            setUserName(user.name);
+            localStorage.setItem("username", user.name);
+  
+            const dataResponse = await fetch(`${API_URL}/api/user`, {
               headers: { Authorization: `Bearer ${token}` },
             });
-            if (response.ok) {
-              const user = await response.json();
-              setUserName(user.name);
-              localStorage.setItem("username", user.name);
-            } else {
-              console.error("Failed to fetch user details.");
+  
+            if (dataResponse.ok) {
+              const data = await dataResponse.json();
+              setFolders(data.folders || []);
+              setFiles(data.files || []);
+              localStorage.setItem("folders", JSON.stringify(data.folders || []));
+              localStorage.setItem("files", JSON.stringify(data.files || []));
             }
-          } catch (error) {
-            console.error("Error fetching username:", error);
           }
+        } catch (error) {
+          console.error("Error fetching user details:", error);
         }
-      };
+      }
+    };
+    if (!savedFolders || !savedFiles) {
       fetchUsername();
     }
   }, []);
@@ -88,12 +110,50 @@ const [isPopupVisible, setIsPopupVisible] = useState(false); // Popup visibility
   };
 
   // Create a new folder
-  const createFolder = () => {
-    if (newFolderName.trim()) {
-      setFolders([...folders, newFolderName]);
-      closeFolderPopup();
+
+const createFolder = async () => {
+  if (newFolderName.trim()) {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        alert("You must be logged in to create a folder.");
+        return;
+      }
+
+      const response = await axios.post(
+        `${API_URL}/api/user/folders`,
+        { name: newFolderName },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 201 && response.data.folder) {
+        const newFolder = response.data.folder;
+
+        setFolders((prevFolders) => {
+          const updatedFolders = [...prevFolders, newFolder];
+          localStorage.setItem("folders", JSON.stringify(updatedFolders)); // Save to localStorage
+          return updatedFolders;
+        });
+
+        setNewFolderName("");
+        setIsFolderPopupVisible(false);
+      } else {
+        alert("Failed to create folder. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error creating folder:", error);
+      alert("Error creating folder. Please try again.");
     }
-  };
+  } else {
+    alert("Please enter a folder name.");
+  }
+};
 
   // Open form creation popup
   const openFormPopup = () => {
@@ -107,12 +167,50 @@ const [isPopupVisible, setIsPopupVisible] = useState(false); // Popup visibility
   };
 
   // Create a new typebot (form)
-  const createTypebot = () => {
+  const createTypebot = async () => {
     if (newFormName.trim()) {
-      setTypebots([...typebots, newFormName]);
-      closeFormPopup();
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          alert("You must be logged in to create a form.");
+          return;
+        }
+  
+        const response = await axios.post(
+          `${API_URL}/api/user/files`,
+          { name: newFormName },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+  
+        if (response.status === 201 && response.data.file) {
+          const newFile = response.data.file;
+  
+          setFiles((prevFiles) => {
+            const updatedFiles = [...prevFiles, newFile];
+            localStorage.setItem("files", JSON.stringify(updatedFiles)); // Save to localStorage
+            return updatedFiles;
+          });
+  
+          setNewFormName("");
+          setIsFormPopupVisible(false);
+        } else {
+          alert("Failed to create form. Please try again.");
+        }
+      } catch (error) {
+        console.error("Error creating form:", error);
+        alert("An error occurred while creating the form.");
+      }
+    } else {
+      alert("Please enter a form name.");
     }
+  
   };
+  
 
   //   // Open delete popup for folder/form
   const openDeletePopup = () => {
@@ -125,8 +223,11 @@ const [isPopupVisible, setIsPopupVisible] = useState(false); // Popup visibility
     setSelectedFormIndex(null);
     setIsDeletePopupVisible(false);
   };
-  // const deleteFolder = () => {
+  //  const deleteFolder = () => {
   //   setFolders((prevFolders) => prevFolders.filter((_, i) => i !== selectedFolderIndex));
+  //   closeDeletePopup();
+  //  };
+  //   const deleteForms=()={
   //   setTypebots((prevForms) => prevForms.filter((_, i) => i !== selectedFormIndex));
   //   closeDeletePopup();
   // };
@@ -208,26 +309,25 @@ const [isPopupVisible, setIsPopupVisible] = useState(false); // Popup visibility
             Create a folder
           </button>
           <ul className={styles.folderList}>
-            {folders.map((folder, index) => (
-              <li key={index} className={styles.folderItem}>
-                {folder}
-                {editViewMode === 'edit' && (
-                  <button className={styles.deletebutton} >
-                    <img 
-                    src={delete_img} 
-                    alt="deletefolder" 
-                    className={styles.deleteImg} 
-                    onClick={(e)=>
-                    {
-                      e.stopPropagation();
-                      openDeletePopup(index);
-                    }
-                    }/>
-                  </button>
-                )}
-              </li>
-            ))}
-          </ul>
+  {folders.map((folder, index) => (
+    <li key={index} className={styles.folderItem}>
+      {folder.name} {/* Display folder name */}
+      {editViewMode === 'edit' && (
+        <button className={styles.deletebutton}>
+          <img
+            src={delete_img}
+            alt="deletefolder"
+            className={styles.deleteImg}
+            onClick={(e) => {
+              e.stopPropagation();
+              openDeletePopup(index);
+            }}
+          />
+        </button>
+      )}
+    </li>
+  ))}
+</ul>
         </div>
         <div className={styles.formCreation}>
           <button onClick={openFormPopup} className={styles.typebot}>
@@ -237,27 +337,23 @@ const [isPopupVisible, setIsPopupVisible] = useState(false); // Popup visibility
             </p>
           </button>
           <ul className={styles.typebotList}>
-            {typebots.map((typebot, index) => (
-              <li key={index} className={styles.typebotItem}>
-                {typebot}
-                {editViewMode === 'edit' && (
-                  <button className={styles.deletebutton} >
-                    <img 
-                    src={delete_img} 
-                    alt="deleteform" 
-                    className={styles.formdeleteImg}
-                    onClick={(e)=>
-                      {
-                        e.stopPropagation();
-                        openDeletePopup(index);
-                      }
-                      }
-                    />
-                  </button>
-                )}
-              </li>
-            ))}
-          </ul>
+  {files.map((file, index) => (
+    <li key={index} className={styles.typebotItem}>
+      {file.name}
+      {editViewMode === "edit" && (
+        <button className={styles.deletebutton}>
+          <img src={delete_img} alt="deleteform" 
+          className={styles.formdeleteImg} 
+          onClick={(e) => {
+            e.stopPropagation();
+            openDeletePopup(index);
+          }}/>
+        </button>
+      )}
+    </li>
+  ))}
+</ul>
+
         </div>
       </div>
 

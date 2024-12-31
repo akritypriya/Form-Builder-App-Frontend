@@ -10,15 +10,15 @@ function Workspace() {
 const [isPopupVisible, setIsPopupVisible] = useState(false); // Popup visibility state
   const [isDarkMode, setIsDarkMode] = useState('isDarkMode'); // Theme toggle state
   const [folders, setFolders] = useState([]); // State to track folders
-  const [files, setFiles] = useState([]);// State to track folders
-  const [typebots, setTypebots] = useState([]); // State to track typebots
+  const [files, setFiles] = useState([]);// State to track files
   const [isFolderPopupVisible, setIsFolderPopupVisible] = useState(false); // Folder popup visibility
   const [isFormPopupVisible, setIsFormPopupVisible] = useState(false); // Form popup visibility
   const [newFolderName, setNewFolderName] = useState(''); // New folder name input
   const [newFormName, setNewFormName] = useState(''); // New form name input
   const [editViewMode, setEditViewMode] = useState('edit'); // State to track "edit/view" mode
-  const [isDeletePopupVisible, setIsDeletePopupVisible] = useState(false); // Delete popup visibility
+  const [isDeletePopupVisible, setIsDeletePopupVisible] = useState(false); // Delete Folder popup visibility
   const [selectedFolderIndex, setSelectedFolderIndex] = useState(null);// Folder index to delete
+  const [isFormDeletePopupVisible, setIsFormDeletePopupVisible] = useState(false); // Delete Folder popup visibility
   const [selectedFormIndex, setSelectedFormIndex] = useState(null);// Form index to delete
   const [selectedValue, setSelectedValue] = useState(''); //  dropdown
   const [userName, setUserName] = useState('');
@@ -90,12 +90,6 @@ const [isPopupVisible, setIsPopupVisible] = useState(false); // Popup visibility
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
     document.body.className = isDarkMode ? styles.lightTheme : styles.darkTheme; // Apply body styles
-  };
-
-  // Toggle popup visibility
-  const togglePopup = () => {
-    setIsPopupVisible(!isPopupVisible);
-   
   };
 
   // Open folder creation popup
@@ -211,32 +205,134 @@ const createFolder = async () => {
   
   };
   
+  // Function to open the folder delete confirmation popup
+const openDeletePopup = (index) => {
+  setIsDeletePopupVisible(true);
+  setSelectedFolderIndex(index);
+};
 
-  //   // Open delete popup for folder/form
-  const openDeletePopup = () => {
-    setIsDeletePopupVisible(true);
-  };
+// Function to close the folder delete confirmation popup
+const closeDeletePopup = () => {
+  setSelectedFolderIndex(null); // Reset selected index
+  setIsDeletePopupVisible(false);
+};
 
-  // Close delete popup
-  const closeDeletePopup = () => {
-    setSelectedFolderIndex(null);
-    setSelectedFormIndex(null);
-    setIsDeletePopupVisible(false);
+// Function to delete a folder
+const deleteFolder = async () => {
+  if (selectedFolderIndex !== null) {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("You must be logged in to delete a folder.");
+        return;
+      }
+
+      const folderId = folders[selectedFolderIndex]?._id; // Safely access folder ID
+      if (!folderId) {
+        alert("Folder ID not found.");
+        return;
+      }
+
+      // Perform DELETE request
+      const response = await axios.delete(`${API_URL}/api/user/folders/${folderId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response.status === 200) {
+        setFolders((prevFolders) => {
+          const updatedFolders = prevFolders.filter((_, i) => i !== selectedFolderIndex);
+          localStorage.setItem("folders", JSON.stringify(updatedFolders)); // Update localStorage
+          return updatedFolders;
+        });
+        closeDeletePopup(); // Close the popup
+      } else {
+        alert("Failed to delete folder. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error deleting folder:", error);
+      alert("Error deleting folder. Please try again.");
+    }
+  }
+};
+
+//form 
+  // Function to open the form delete confirmation popup
+  const openFormDeletePopup = (index) => {
+    setIsFormDeletePopupVisible(true);
+    setSelectedFormIndex(index);
   };
-  //  const deleteFolder = () => {
-  //   setFolders((prevFolders) => prevFolders.filter((_, i) => i !== selectedFolderIndex));
-  //   closeDeletePopup();
-  //  };
-  //   const deleteForms=()={
-  //   setTypebots((prevForms) => prevForms.filter((_, i) => i !== selectedFormIndex));
-  //   closeDeletePopup();
-  // };
+  
+  // Function to close the form delete confirmation popup
+  const closeFormDeletePopup = () => {
+    setSelectedFormIndex(null); // Reset selected index
+    setIsFormDeletePopupVisible(false);
+  };
+  
+
+  // Function to delete a file
+  const deleteForm = async () => {
+    if (selectedFormIndex !== null) {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          alert("You must be logged in to delete a file.");
+          return;
+        }
+  
+        const fileId = files[selectedFormIndex]?._id; // Correctly access the file ID
+        if (!fileId) {
+          alert("File ID not found.");
+          return;
+        }
+  
+        // Use DELETE method
+        const response = await axios.delete(`${API_URL}/api/user/files/${fileId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+  
+        if (response.status === 200) {
+          setFiles((prevFiles) => {
+            const updatedFiles = prevFiles.filter((_, i) => i !== selectedFormIndex);
+            localStorage.setItem("files", JSON.stringify(updatedFiles)); // Update localStorage
+            return updatedFiles;
+          });
+          closeFormDeletePopup();
+          //alert("File deleted successfully!");
+        } else {
+          alert("Failed to delete the file. Please try again.");
+        }
+      } catch (error) {
+        console.error("Error deleting the file:", error);
+        alert("Error deleting the file. Please try again.");
+      }
+    }
+  };
+  
     
-
+  const handleItemClick = () => {
+    navigate('/workspace/area'); // Navigate to the workshopge page for the selected bot
+  };
 
   // Handle edit/view mode change
   const handleEditViewChange = (event) => {
     setEditViewMode(event.target.value);
+  };
+ //share 
+  const shareTogglePopup = () => {
+    setIsPopupVisible(!isPopupVisible);
+  };
+  
+  const handleSendInvite = () => {
+    const link = `${window.location.href}?mode=${editViewMode}`; // Append edit/view mode to the link
+    navigator.clipboard.writeText(link); // Copy the link to clipboard
+    alert(`Invite link sent! Share this link: ${link}`); // Display the link sent message
+    setIsPopupVisible(false); // Close the Share Popup
+  };
+  
+  const handleCopyLink = () => {
+    const link = `${window.location.href}?mode=${editViewMode}`; // Append edit/view mode to the link
+    navigator.clipboard.writeText(link); // Copy the link to clipboard
+    alert("Link copied to clipboard!");
   };
 
   return (
@@ -270,36 +366,41 @@ const createFolder = async () => {
         </div>
 
         {/* Share Button */}
-        <button type="button" className={styles.shareButton} onClick={togglePopup}>
+        <button type="button" className={styles.shareButton} onClick={shareTogglePopup}>
           Share
         </button>
       </div>
 
-      {/* Popup */}
-      {isPopupVisible && (
-        <div className={styles.popup}>
-          <div className={styles.popupContent}>
-            <button className={styles.closeButton} onClick={togglePopup}>
-              X
-            </button>
-            <div className={styles.editViewDropdown}>
-              <select
-                value={editViewMode}
-                onChange={handleEditViewChange}
-                className={styles.editView}
-              >
-                <option value="edit">Edit</option>
-                <option value="view">View</option>
-              </select>
-            </div>
-            <h3>Invite by Email</h3>
-            <input type="text" placeholder="Enter email id" className={styles.input} />
-            <button className={styles.primaryButton}>Send Invite</button>
-            <h3>Invite by Link</h3>
-            <button className={styles.primaryButton}>Copy Link</button>
-          </div>
-        </div>
-      )}
+{/* Popup */}
+{isPopupVisible && (
+  <div className={styles.popup}>
+    <div className={styles.popupContent}>
+      <button className={styles.closeButton} onClick={shareTogglePopup}>
+        X
+      </button>
+      <div className={styles.editViewDropdown}>
+        <select
+          value={editViewMode}
+          onChange={handleEditViewChange}
+          className={styles.editView}
+        >
+          <option value="edit">Edit</option>
+          <option value="view">View</option>
+        </select>
+      </div>
+      <h3>Invite by Email</h3>
+      <input
+        type="text"
+        placeholder="Enter email id"
+        className={styles.input}
+        //disabled // Optional: Disable email input for demonstration
+      />
+      <button className={styles.primaryButton} onClick={handleSendInvite}>Send Invite</button>
+      <h3>Invite by Link</h3>
+      <button className={styles.primaryButton} onClick={handleCopyLink}>Copy Link</button>
+    </div>
+  </div>
+)}
 
       {/* Folder and Form Creation Section */}
       <div className={styles.sectionContainer}>
@@ -310,7 +411,7 @@ const createFolder = async () => {
           </button>
           <ul className={styles.folderList}>
   {folders.map((folder, index) => (
-    <li key={index} className={styles.folderItem}>
+    <li key={index} className={styles.folderItem} onClick={() => handleItemClick(folder._id, 'folder')}>
       {folder.name} {/* Display folder name */}
       {editViewMode === 'edit' && (
         <button className={styles.deletebutton}>
@@ -338,7 +439,7 @@ const createFolder = async () => {
           </button>
           <ul className={styles.typebotList}>
   {files.map((file, index) => (
-    <li key={index} className={styles.typebotItem}>
+    <li key={index} className={styles.typebotItem} onClick={() => handleItemClick(file._id, 'file')}>
       {file.name}
       {editViewMode === "edit" && (
         <button className={styles.deletebutton}>
@@ -346,7 +447,7 @@ const createFolder = async () => {
           className={styles.formdeleteImg} 
           onClick={(e) => {
             e.stopPropagation();
-            openDeletePopup(index);
+            openFormDeletePopup(index);
           }}/>
         </button>
       )}
@@ -406,7 +507,7 @@ const createFolder = async () => {
           </div>
         </div>
       )}
-          {/* Delete Button Popup */}
+          {/* Delete folder Button Popup */}
       {isDeletePopupVisible && (
         <div className={styles.deletepopup}>
           <div className={styles.deletepopupContent}>
@@ -415,9 +516,27 @@ const createFolder = async () => {
       
             </h2>
             <div className={styles.deletebuttonContainer}>
-              <button className={styles.deletebutton1}>Confirm</button>
+              <button className={styles.deletebutton1} onClick={deleteFolder}>Confirm</button>
               <div className={styles.deleteborderline}></div>
               <button className={styles.deletebutton2} onClick={closeDeletePopup}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+       {/* Delete form Button Popup */}
+            {isFormDeletePopupVisible && (
+        <div className={styles.deletepopup}>
+          <div className={styles.deletepopupContent}>
+            <h2 className={styles.deleteText}>
+              Are you sure you want to delete this folder?
+      
+            </h2>
+            <div className={styles.deletebuttonContainer}>
+              <button className={styles.deletebutton1} onClick={deleteForm}>Confirm</button>
+              <div className={styles.deleteborderline}></div>
+              <button className={styles.deletebutton2} onClick={closeFormDeletePopup}>
                 Cancel
               </button>
             </div>

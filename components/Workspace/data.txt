@@ -471,3 +471,55 @@ function Workspace() {
 }
 
 export default Workspace;
+
+//form 
+  // Function to open the form delete confirmation popup
+  const openFormDeletePopup = (index) => {
+    setIsFormDeletePopupVisible(true);
+    setSelectedFormIndex(index);
+  };
+  
+  // Function to close the form delete confirmation popup
+  const closeFormDeletePopup = () => {
+    setSelectedFormIndex(null); // Reset selected index
+    setIsFormDeletePopupVisible(false);
+  };
+  
+  //function to delete form
+  // Function to delete a file
+const deleteForm = async () => {
+  if (selectedFormIndex !== null) {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("You must be logged in to delete a file.");
+        return;
+      }
+
+      const fileId = typebots[selectedFormIndex]?._id; // Safely access the file ID
+      if (!fileId) {
+        alert("File ID not found.");
+        return;
+      }
+
+      // Use DELETE method
+      const response = await axios.delete(`${API_URL}/api/user/files/${fileId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response.status === 200) {
+        setTypebots((prevForms) => {
+          const updatedForms = prevForms.filter((_, i) => i !== selectedFormIndex);
+          return updatedForms;
+        });
+        closeFormDeletePopup();
+        alert("File deleted successfully!");
+      } else {
+        alert("Failed to delete the file. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error deleting the file:", error);
+      alert("Error deleting the file. Please try again.");
+    }
+  }
+};

@@ -4,6 +4,7 @@ import Register from "../components/Register/Register";
 import Login from '../components/Login/Login';
 import LandingPage from '../components/LandingPage/LandingPage';
 import Workspace from '../components/Workspace/Workspace';
+
 import  Settings from '../components/Workspace/Settings';
 
 const App = () => (
@@ -14,6 +15,7 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/home" element={<LandingPage />} />
             <Route path="/workspace" element={<Workspace />} />
+            
             <Route path="/settings" element={<Settings />} />
 
         </Routes>

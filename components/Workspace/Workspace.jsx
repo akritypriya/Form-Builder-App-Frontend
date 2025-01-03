@@ -8,7 +8,7 @@ const API_URL = "http://localhost:3000";
 
 function Workspace() {
   const [isPopupVisible, setIsPopupVisible] = useState(false); // Popup visibility state
-  const [isDarkMode, setIsDarkMode] = useState("isDarkMode"); // Theme toggle state
+  const [isDarkMode, setIsDarkMode] = useState(false); // Theme toggle state
   const [folders, setFolders] = useState([]); // State to track folders
   const [files, setFiles] = useState([]); // State to track files
   const [isFolderPopupVisible, setIsFolderPopupVisible] = useState(false); // Folder popup visibility
@@ -18,8 +18,7 @@ function Workspace() {
   const [editViewMode, setEditViewMode] = useState("edit"); // State to track "edit/view" mode
   const [isDeletePopupVisible, setIsDeletePopupVisible] = useState(false); // Delete Folder popup visibility
   const [selectedFolderIndex, setSelectedFolderIndex] = useState(null); // Folder index to delete
-  const [isFormDeletePopupVisible, setIsFormDeletePopupVisible] =
-    useState(false); // Delete Folder popup visibility
+  const [isFormDeletePopupVisible, setIsFormDeletePopupVisible] =useState(false); // Delete Folder popup visibility
   const [selectedFormIndex, setSelectedFormIndex] = useState(null); // Form index to delete
   const [selectedValue, setSelectedValue] = useState(""); //  dropdown
   const [userName, setUserName] = useState("");
@@ -411,7 +410,7 @@ function Workspace() {
                 <option value="view">View</option>
               </select>
             </div>
-            <h3>Invite by Email</h3>
+            <h3 className={styles.textEmail}> Invite by Email</h3>
             <input
               type="text"
               placeholder="Enter email id"
@@ -421,7 +420,7 @@ function Workspace() {
             <button className={styles.primaryButton} onClick={handleSendInvite}>
               Send Invite
             </button>
-            <h3>Invite by Link</h3>
+            <h3 className={styles.textlink}>Invite by Link</h3>
             <button className={styles.primaryButton} onClick={handleCopyLink}>
               Copy Link
             </button>

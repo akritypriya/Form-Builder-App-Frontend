@@ -5,6 +5,7 @@ import Login from '../components/Login/Login';
 import LandingPage from '../components/LandingPage/LandingPage';
 import Workspace from '../components/Workspace/Workspace';
 import WorkspaceArea from '../components/Workspace/WorkspaceArea';
+import Response from '../components/Workspace/Response';
 import  Settings from '../components/Workspace/Settings';
 
 const App = () => (
@@ -15,7 +16,8 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/home" element={<LandingPage />} />
             <Route path="/workspace" element={<Workspace />} />  
-            <Route path="/workspace/area" element={<WorkspaceArea />} />                    
+            <Route path="/workspace/area" element={<WorkspaceArea />} />
+            <Route path="/workspace/response" element={<Response />} />                 
             <Route path="/settings" element={<Settings />} />
 
         </Routes>

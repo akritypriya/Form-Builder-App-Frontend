@@ -30,15 +30,17 @@
   position: relative;
   padding-left:30%;
   
+
+  
 }
 
 /* Dropdown select element */
 .select {
   padding: 8px 150px;
-  border: 1px solid #b0b0b0;
   border-radius: 4px;
   font-size: 14px;
-  text-align: left;  
+  text-align: left; 
+  
   
 }
 
@@ -73,7 +75,7 @@
 /* Toggle switch */
 .toggleSwitch {
   width: 50px;
-  height: 25px;
+  height: 22px;
   background-color: #ccc;
   border-radius: 25px;
   display: flex;
@@ -107,11 +109,11 @@
 
 /* Share button */
 .shareButton {
-  padding: 10px 20px;
+  padding: 3px 20px;
   background-color: #1a5fff;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 5px;
   cursor: pointer;
   font-size: 14px;
   margin-left: 10%;
@@ -145,7 +147,7 @@
   position: relative;
   border: 1px solid #47474A;
   right:30px;
-  
+  padding-left:35px;
   
 }
 
@@ -153,22 +155,20 @@
   
 font-family: Open Sans;
 font-size: 25px;
-font-weight: 400;
+font-weight: 500;
 line-height: 10px;
 margin-top: 55px;
 margin-bottom: 15px;
 }
 .textlink{
-  font-family: Open Sans;
+font-family: Open Sans;
 font-size: 25px;
-font-weight: 400;
+font-weight: 500;
 line-height: 10px;
 margin-top: 25px;
 margin-bottom: 25px;
 }
 .input {
-  width: 100%;
-  padding: 8px;
   border: #000;
   font-size: 14px;
   background: #1F1F23;
@@ -177,7 +177,7 @@ margin-bottom: 25px;
 }
 
 .primaryButton {
-  width: 100%;
+  width: 96%;
   padding: 8px;
   background-color: #1a5fff;
   color: white;
@@ -496,3 +496,9 @@ margin-bottom: 10px;
   
 }
 
+.description {
+  font-size: 12px;
+  color: gray;
+  margin-top: 5px;
+  display: block;
+}

@@ -16,6 +16,7 @@
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
+    
   }
   
   .navBar {
@@ -25,6 +26,7 @@
     height: 50px;
     border-bottom: 1px solid #b0b0b0;
     background: #18181B;
+    
 
   }
   .lightTheme .navBar {
@@ -222,7 +224,7 @@ border-radius: 5px ;
     flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 20px;
-    background-color:  #18181B; 
+    background-color:transparent;
   }
   
   
@@ -230,7 +232,7 @@ border-radius: 5px ;
     width:120px;
     height:35px;
     gap:20px;
-    background-color:  #18181B;
+    background-color:transparent;
     border: 1px solid transparent;
     border-radius: 6px;
     display: flex;
@@ -253,19 +255,27 @@ border-radius: 5px ;
     flex: 1; 
   background: #1F1F23;
   padding: 20px;
-
+  overflow-y: auto;
+  height: 600px;
+  scrollbar-width: thin; 
+  scrollbar-color: #888 #f1f1f1; 
   }
-
+.flagImg{
+  
+  margin-left: 410px;
+  margin-bottom: -30px;
+}
   .htext{
-    width: 315px;
+    width: 300px;
    margin-left:400px;
    border-radius: 8px;
-   margin-top:40px;
+   margin-top:-10px;
    background: #18181B;
    color: white;
    font-family: Open Sans;
 font-size:25px;
-padding: 15px;
+padding: 10px;
+padding-left:40px;
 
   }
 .lightTheme .htext{
@@ -282,13 +292,28 @@ padding: 15px;
   margin-top: 20px;
   background: #18181B;
   width: 349px;
-  height: 128px;
+  height: 132px;
   margin-left:400px;
   display: flex;
   flex-direction: column;
   color: #522224;
   font-family: Poppins;
   font-size: 12px;
+  position: relative;
+  border-radius: 8px ;
+  
+}
+.requiredField{
+  padding-left: 20px;
+}
+.deletebutton{
+  position: absolute;
+  background-color:transparent;
+   cursor: pointer;
+   
+   }
+.deleteImg{
+  margin-left:300px;
   
 }
 .lightTheme .label{
@@ -318,4 +343,23 @@ padding: 15px;
  font-size: 15px;
 margin-bottom: 8px;;
 }
+
+.linkedButton{
+    margin-left:1000px;
+    background-color:transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+.linkedButton .linkedImg:hover {
+  border-color: #4b83ff; 
+}
+.Inputdescription{
+  color: #555555;
+  font-size: small;
+  margin-right:82px;
+
+}
+
 

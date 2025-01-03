@@ -11,7 +11,7 @@ import  Settings from '../components/Workspace/Settings';
 const App = () => (
     <BrowserRouter>
         <Routes>
-            <Route path="/" element={<Login />} />
+            <Route path="/" element={<LandingPage />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/home" element={<LandingPage />} />

@@ -18,12 +18,43 @@ import wlinked from "../../assets/wlinked.png";
 import delete_img from "../../assets/delete_img.png";
 import flag from "../../assets/flag.png";
 import { useNavigate} from "react-router-dom";
+import axios from "axios";
 
 function WorkspaceArea() {
   const [isDarkMode, setIsDarkMode] = useState(false);  //Theme toggle state
   const [elements, setElements] = useState([]);  //Dynamic elements state
   const [isLinkCopied, setIsLinkCopied] = useState(false);  //Link copied state
   const navigate = useNavigate();
+  const [workspaceName, setWorkspaceName] = useState("");
+
+  const handleSaveWorkspace = async () => {
+    const token = localStorage.getItem("token");
+    console.log("Retrieved Token:", token);
+    const workspaceData = {
+      workspaceName: workspaceName || "Untitled Workspace",
+      elements,
+      createdBy: "USER_ID", 
+    };
+
+    try {
+      const response = await axios.post(
+        `http://localhost:3000/api/user/workspace/save`,
+        workspaceData,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            }
+        }
+    );
+      alert("Workspace saved successfully!");
+    } catch (error) {
+      console.error("Error saving workspace:", error);
+      alert("Failed to save the workspace. Please try again.");
+    }
+  };
+
+  
 
    //Toggle theme
   const toggleTheme = () => {
@@ -31,7 +62,7 @@ function WorkspaceArea() {
     document.body.className = isDarkMode ? styles.lightTheme : styles.darkTheme;  //Apply body styles
   };
 
-   //Handle adding a new element with input textbox
+   //Handle adding a new element with bubble input textbox
   const handleAddElement = (label) => {
     let count = 1;
     const updatedLabel = (existingLabel) => {
@@ -58,7 +89,7 @@ function WorkspaceArea() {
     ]);
   };
 
-   //Handle adding a new button element with description
+   
   const handleInputButtonElement = (label, description) => {
     let count = 1;
     const updatedLabel = (existingLabel) => {
@@ -122,6 +153,8 @@ function WorkspaceArea() {
           type="text"
           placeholder="Enter Form Name"
           className={styles.navInput}
+          value={workspaceName}
+          onChange={(e) => setWorkspaceName(e.target.value)}
         />
         <button type="button" className={styles.flowButton}>
           <img src={wflow} alt="Flow" className={styles.flowImg} />
@@ -149,7 +182,7 @@ function WorkspaceArea() {
           >
             Share
           </button>
-          <button type="button" className={styles.saveButton} >
+          <button type="button" className={styles.saveButton} onClick={handleSaveWorkspace} >
             <img src={wsave} alt="Save" className={styles.saveImg} />
           </button>
           <button

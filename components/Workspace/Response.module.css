@@ -6,7 +6,7 @@
   
   .darkTheme {
     
-    background: #1F1F23;
+    background: #18171C;
     color: #fff;
   }
     
@@ -160,11 +160,111 @@
     .sectionContainer {    
         flex: 1; 
         display: flex;
-        background: #1F1F23;
+        background-color: #18171C;
         padding-top:20px;
-         
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around; 
+        padding: 20px;
+        background: #1F1F23;
+        color: #fff;
+        position:relative;
         }
         .lightTheme .sectionContainer{
          background-color: white;
          color: #000;
         }
+
+
+.responseTable {
+  width: 80%;
+  border-collapse: collapse;
+  background:transparent;
+  color: #fff;
+  margin-bottom: 20px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: small;
+}
+
+.lightTheme .responseTable {
+  background: #f5f5f5;
+  color: #000;
+}
+
+.responseTable th,
+.responseTable td {
+  border: 1px solid #444;
+  padding: 8px 12px;
+  text-align: center;
+}
+
+.lightTheme .responseTable th,
+.lightTheme .responseTable td {
+  border: 1px solid #ddd;
+}
+
+.responseTable th {
+  background: #3A3A40;
+  font-weight: bold;
+  color: #FFF;
+}
+
+.lightTheme .responseTable th {
+  background: #E0E0E0;
+  color: #000;
+}
+
+.flexAlign {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chartContainer {
+  width: 300px;
+  height: 300px;
+  background:transparent;
+  display: flex;
+  margin-right:600px ;
+  justify-content: center;
+  padding: 15px;
+  
+}
+
+.lightTheme .chartContainer {
+  background: #f5f5f5;
+  
+}
+
+
+.completionRate{
+  width:125px;
+  height:70px;
+  margin-bottom:-190px;
+  margin-left:150px;
+  background: #3A3A40;
+  border: 8px ;
+  border-radius: 5px;
+  padding: 18px ;
+  text-align: center;
+  font-size: x-large;
+  position: absolute;
+}
+
+.statsContainer{
+  display: flex;
+  gap: 400px;
+  margin-top:24px;
+  text-align: center;
+  font-size: x-large; 
+  margin-bottom: 20px;
+ 
+}
+.stat{
+  background: #3A3A40;
+  width:125px;
+  height:70px;
+  border: 8px ;
+  border-radius: 5px;
+  padding-top: 20px;
+}

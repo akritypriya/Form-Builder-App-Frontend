@@ -81,14 +81,14 @@ function Workspace() {
     const value = event.target.value;
     setSelectedValue(value);
     if (value) {
-      navigate(value); // Navigate to the selected dropdown value
+      navigate(value); 
     }
   };
 
   // Toggle theme
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
-    document.body.className = isDarkMode ? styles.lightTheme : styles.darkTheme; // Apply body styles
+    document.body.className = isDarkMode ? styles.lightTheme : styles.darkTheme; 
   };
 
   // Open folder creation popup
@@ -130,7 +130,7 @@ function Workspace() {
 
           setFolders((prevFolders) => {
             const updatedFolders = [...prevFolders, newFolder];
-            localStorage.setItem("folders", JSON.stringify(updatedFolders)); // Save to localStorage
+            localStorage.setItem("folders", JSON.stringify(updatedFolders)); 
             return updatedFolders;
           });
 
@@ -185,7 +185,7 @@ function Workspace() {
 
           setFiles((prevFiles) => {
             const updatedFiles = [...prevFiles, newFile];
-            localStorage.setItem("files", JSON.stringify(updatedFiles)); // Save to localStorage
+            localStorage.setItem("files", JSON.stringify(updatedFiles)); 
             return updatedFiles;
           });
 
@@ -211,7 +211,7 @@ function Workspace() {
 
   // Function to close the folder delete confirmation popup
   const closeDeletePopup = () => {
-    setSelectedFolderIndex(null); // Reset selected index
+    setSelectedFolderIndex(null); 
     setIsDeletePopupVisible(false);
   };
 
@@ -225,13 +225,13 @@ function Workspace() {
           return;
         }
 
-        const folderId = folders[selectedFolderIndex]?._id; // Safely access folder ID
+        const folderId = folders[selectedFolderIndex]?._id; 
         if (!folderId) {
           alert("Folder ID not found.");
           return;
         }
 
-        // Perform DELETE request
+        //  DELETE request
         const response = await axios.delete(
           `${API_URL}/api/user/folders/${folderId}`,
           {
@@ -244,10 +244,10 @@ function Workspace() {
             const updatedFolders = prevFolders.filter(
               (_, i) => i !== selectedFolderIndex
             );
-            localStorage.setItem("folders", JSON.stringify(updatedFolders)); // Update localStorage
+            localStorage.setItem("folders", JSON.stringify(updatedFolders)); 
             return updatedFolders;
           });
-          closeDeletePopup(); // Close the popup
+          closeDeletePopup();
         } else {
           alert("Failed to delete folder. Please try again.");
         }
@@ -316,7 +316,7 @@ function Workspace() {
   };
 
   const handleItemClick = () => {
-    navigate("/workspace/area"); // Navigate to the workshopge page for the selected bot
+    navigate("/workspace/area"); 
   };
 
   // Handle edit/view mode change
@@ -329,15 +329,15 @@ function Workspace() {
   };
 
   const handleSendInvite = () => {
-    const link = `${window.location.href}?mode=${editViewMode}`; // Append edit/view mode to the link
-    navigator.clipboard.writeText(link); // Copy the link to clipboard
-    alert(`Invite link sent! Share this link: ${link}`); // Display the link sent message
-    setIsPopupVisible(false); // Close the Share Popup
+    const link = `${window.location.href}?mode=${editViewMode}`; 
+    navigator.clipboard.writeText(link);
+    alert(`Invite link sent! Share this link: ${link}`); 
+    setIsPopupVisible(false); 
   };
 
   const handleCopyLink = () => {
-    const link = `${window.location.href}?mode=${editViewMode}`; // Append edit/view mode to the link
-    navigator.clipboard.writeText(link); // Copy the link to clipboard
+    const link = `${window.location.href}?mode=${editViewMode}`;
+    navigator.clipboard.writeText(link);
     alert("Link copied to clipboard!");
   };
 
@@ -363,7 +363,7 @@ function Workspace() {
             <option value="/settings">
               Settings
             </option>
-            <option value="/home">
+            <option value="/home" className={styles.dlogout}>
               Log Out
             </option>
           </select>

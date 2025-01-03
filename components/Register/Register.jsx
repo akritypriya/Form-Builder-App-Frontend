@@ -7,6 +7,7 @@ import Google_Icon from "../../assets/Google_Icon.svg";
 import side_ellipse from "../../assets/side_ellipse.png";
 import triangle from "../../assets/triangle.png";
 
+
 export default function Register() {
   const [formData, setFormData] = useState({
     username: "",
@@ -30,7 +31,7 @@ export default function Register() {
 
       return;
     }
-
+    
     try {
       const res = await register(formData);
 
@@ -41,10 +42,11 @@ export default function Register() {
           email: "",
           password: "",
           confirmPassword: "",
-        }); // Reset form
-        setError(""); // Clear error
-              // Store JWT token in localStorage
-      localStorage.setItem("token", formData.token);
+        }); 
+     
+        //setError("");
+              
+      
       } else {
         setError(res.data.message || "Registration failed");
       }
@@ -53,7 +55,7 @@ export default function Register() {
       setError("An error occurred. Please try again.");
     }
   };
-
+  
   return (
     <div className={styles.header}>
       <a href="/home">
@@ -135,7 +137,7 @@ export default function Register() {
             />
             {formSubmitted && error && <p className={styles.error}>{error}</p>}
           </div>
-          <button type="submit" className={styles.formButton1}>
+          <button type="submit" className={styles.formButton1}> 
             Sign Up
           </button>
         </form>

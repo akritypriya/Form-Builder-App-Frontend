@@ -357,13 +357,13 @@ function Workspace() {
               isDarkMode ? styles.darkDropdown : styles.lightDropdown
             }`}
           >
-            <option value="/workspace" className={styles.doption}>
+            <option value="/workspace">
               {userName ? `${userName}'s workspace` : "Loading..."}
             </option>
-            <option value="/settings" className={styles.doption}>
+            <option value="/settings">
               Settings
             </option>
-            <option value="/home" className={styles.dlogout}>
+            <option value="/home">
               Log Out
             </option>
           </select>

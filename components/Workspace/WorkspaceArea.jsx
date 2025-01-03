@@ -99,7 +99,7 @@ function WorkspaceArea() {
 
    //Handle share button click
   const handleShareButton = async () => {
-    const workspaceLink = `${window.location.origin}/workspacearea`;
+    const workspaceLink = `${window.location.origin}/workspace/area`;
     try {
       await navigator.clipboard.writeText(workspaceLink);
       setIsLinkCopied(true);
@@ -130,7 +130,7 @@ function WorkspaceArea() {
           Response
         </button>
         <div className={styles.toggleContainer}>
-          <span className={styles.label}>Light</span>
+          <span className={styles.wlabel}>Light</span>
           <div
             className={`${styles.toggleSwitch} ${
               isDarkMode ? styles.dark : styles.light
@@ -139,7 +139,7 @@ function WorkspaceArea() {
           >
             <div className={styles.toggleCircle}></div>
           </div>
-          <span className={styles.label}>Dark</span>
+          <span className={styles.wlabel}>Dark</span>
         </div>
         <div className={styles.buttonGroup}>
           <button

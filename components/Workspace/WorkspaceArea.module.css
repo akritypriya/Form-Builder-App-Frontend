@@ -36,16 +36,16 @@
  
   .navInput {
     flex: 1;
-    width: 100px;
+    width:150px;
     height: 15px;
     background: #37373E;
     color: #fff;
     padding: 5px;
     border-radius: 3px ;
-    margin-right:430px;
+    margin-right:500px;
     border: 1px solid #FFFFFF29;
-  }
-  .lightTheme .navInput {
+  } 
+   .lightTheme .navInput {
     background: #FFFFFF;
     border: 1px solid #D6D6D6;
 
@@ -58,7 +58,8 @@
     background-color: #18181B;
     cursor: pointer;
     padding: 5px;
-    margin-right:3px; 
+    margin-right:3px;   
+      
   }
   .lightTheme .responseButton {
     background: #FFFFFF;
@@ -75,34 +76,36 @@
     padding: 5px 14px;
     cursor: pointer;
     font-size: 14px;
-    margin-right:240px;
+    margin-right:200px;
     border: 1px solid transparent; 
     transition: border-color 0.3s ease; 
     padding-bottom: 9px;
     padding-top:9px;
+    
   }
-  .responseButton:hover {
-    border-color:#fff;
-  }
-
+ 
   .toggleContainer {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap:5px;
+    
   }
   
-  .label {
+  .wlabel {
+    
     font-family: Open Sans;
     color: #fff;
+    
   }
   
   .lightTheme .label {
+    
     color:black;
 
   }
   .toggleSwitch {
     width: 50px;
-    height: 22px;
+    height: 20px;
     background-color: #ccc;
     border-radius: 25px;
     display: flex;
@@ -352,9 +355,7 @@ margin-bottom: 8px;;
     cursor: pointer;
     transition: border-color 0.3s ease;
 }
-.linkedButton .linkedImg:hover {
-  border-color: #4b83ff; 
-}
+
 .Inputdescription{
   color: #555555;
   font-size: small;

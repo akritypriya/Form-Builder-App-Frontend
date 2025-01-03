@@ -1,525 +1,369 @@
-// import styles from './Workspace.module.css';
-// import { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import folder_img from '../../assets/folder_img.png';
-// import delete_img from '../../assets/delete_img.png';
-// import React from 'react';
+import React, { useState, useEffect } from "react";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { Doughnut } from "react-chartjs-2";
+import { Chart, ArcElement } from "chart.js";
+Chart.register(ArcElement);
+import axios from "axios";
+import wclose from "../../assets/wclose.png";
+//import "./Responce.css";
 
-// function Workspace() {
-//   const [selectedValue, setSelectedValue] = useState('/workspace'); // Header dropdown
-//   const [isPopupVisible, setIsPopupVisible] = useState(false); // Popup visibility state
-//   const [isDarkMode, setIsDarkMode] = useState(false); // Theme toggle state
-//   const [folders, setFolders] = useState([]); // State to track folders
-//   const [typebots, setTypebots] = useState([]); // State to track typebots
-//   const [isFolderPopupVisible, setIsFolderPopupVisible] = useState(false); // Folder popup visibility
-//   const [isFormPopupVisible, setIsFormPopupVisible] = useState(false); // Folder popup visibility
-//   const [newFolderName, setNewFolderName] = useState(''); // New folder name input
-//   const [editViewMode, setEditViewMode] = useState('edit'); // State to track "edit/view" mode
-//   const [isDeletePopupVisible, setIsDeletePopupVisible] = useState(false); // Folder popup visibility
-//   const navigate = useNavigate();
-
-//   // Handle dropdown change
-//   const handleChange = (event) => {
-//     const value = event.target.value;
-//     setSelectedValue(value);
-//     if (value) {
-//       navigate(value); // Navigate to the selected dropdown value
-//     }
-//   };
-
-//   // Toggle theme
-//   const toggleTheme = () => {
-//     setIsDarkMode(!isDarkMode);
-//     document.body.className = isDarkMode ? styles.lightTheme : styles.darkTheme; // Apply body styles
-//   };
-
-//   // Toggle popup visibility
-//   const togglePopup = () => {
-//     setIsPopupVisible(!isPopupVisible);
-//     setIsDeletePopupVisible(!isDeletePopupVisible);
-//   };
-
-//   // Open folder creation popup
-//   const openFolderPopup = () => {
-//     setIsFolderPopupVisible(true);
-//   };
-
-//   // Close folder creation popup
-//   const closeFolderPopup = () => {
-//     setIsFolderPopupVisible(false);
-//     setNewFolderName('');
-//   };
-
-//   // Create a new folder
-//   const createFolder = () => {
-//     if (newFolderName.trim()) {
-//       setFolders([...folders, newFolderName]);
-//       closeFolderPopup();
-//     }
-//   };
-
-//   // open deletepop folder and form
-//   const openDeletePopup = () => {
-//     setIsDeletePopupVisible(true);
-//   };
-
-// //close deletepop folder and form
-// const closeDeletePopup = () => {
-//   setIsDeletePopupVisible(false);
-// };
-
-
-
-//   // Create a new typebot
-//   const createTypebot = () => {
-//     const typebotName = `Typebot ${typebots.length + 1}`;
-//     setTypebots([...typebots, typebotName]);
-//   };
-
-//   // Handle edit/view mode change
-//   const handleEditViewChange = (event) => {
-//     setEditViewMode(event.target.value);
-//   };
-
-//   return (
-//     <div className={`${styles.mainContainer} ${isDarkMode ? styles.dark : styles.light}`}>
-//       <div className={styles.header}>
-//         {/* Dropdown */}
-//         <div className={styles.dropdown}>
-//           <select
-//             value={selectedValue}
-//             onChange={handleChange}
-//             className={`${styles.select} ${isDarkMode ? styles.darkDropdown : styles.lightDropdown}`}
-//           >
-//             <option value="/workspace">Ram's workspace</option>
-//             <option value="/settings">Settings</option>
-//             <option value="/home">Log Out</option>
-//           </select>
-//         </div>
-
-//         {/* Theme Toggle */}
-//         <div className={styles.toggleContainer}>
-//           <span className={styles.label}>Light</span>
-//           <div
-//             className={`${styles.toggleSwitch} ${isDarkMode ? styles.dark : styles.light}`}
-//             onClick={toggleTheme}
-//           >
-//             <div className={styles.toggleCircle}></div>
-//           </div>
-//           <span className={styles.label}>Dark</span>
-//         </div>
-
-//         {/* Share Button */}
-//         <button type="button" className={styles.shareButton} onClick={togglePopup}>
-//           Share
-//         </button>
-//       </div>
-
-//       {/* Popup */}
-//       {isPopupVisible && (
-//         <div className={styles.popup}>
-//           <div className={styles.popupContent}>
-//             <button className={styles.closeButton} onClick={togglePopup}>
-//               X
-//             </button>
-//             <div className={styles.editViewDropdown}>
-//               <select
-//                 value={editViewMode}
-//                 onChange={handleEditViewChange}
-//                 className={styles.editView}
-//               >
-//                 <option value="edit">Edit</option>
-//                 <option value="view">View</option>
-//               </select>
-//             </div>
-//             <h3>Invite by Email</h3>
-//             <input type="text" placeholder="Enter email id" className={styles.input} />
-//             <button className={styles.primaryButton}>Send Invite</button>
-//             <h3>Invite by Link</h3>
-//             <button className={styles.primaryButton}>Copy Link</button>
-//           </div>
-//         </div>
-//       )}
-
-//       {/* Folder Creation and Typebot Section */}
-//       <div className={styles.sectionContainer}>
-//         <div className={styles.folderCreation}>
-//           <button onClick={openFolderPopup} className={styles.folder}>
-//             <img src={folder_img} alt="folder" className={styles.folderImg} />
-//             Create a folder
-//           </button>
-
-//           <ul className={styles.folderList}>
-//             {folders.map((folder, index) => (
-//               <li key={index} className={styles.folderItem}>
-//                 {folder}
-//                 {editViewMode === 'edit' && (
-//                   <button className={styles.deletebutton} onClick={openDeletePopup}>
-//                     <img src={delete_img} alt="deletefolder" className={styles.deleteImg} />
-//                   </button>
-//                 )}
-//               </li>
-//             ))}
-//           </ul>
-//         </div>
-//         <div className={styles.formCreation}>
-//           <button onClick={createTypebot} className={styles.typebot}>
-//             <p className={styles.text}>
-//               +
-//               <span>Create a Typebot</span>
-//             </p>
-//           </button>
-//           <ul className={styles.typebotList}>
-//             {typebots.map((typebot, index) => (
-//               <li key={index} className={styles.typebotItem}>
-//                 new form{typebot}
-//                 {editViewMode === 'edit' && (
-//                   <button className={styles.deletebutton} onClick={openDeletePopup}>
-//                     <img src={delete_img} alt="deleteform" className={styles.formdeleteImg} />
-//                   </button>
-//                 )}
-//               </li>
-//             ))}
-//           </ul>
-//         </div>
-//       </div>
-
-//       {/* Folder Popup */}
-//       {isFolderPopupVisible && (
-//         <div className={styles.folderpopup}>
-//           <div className={styles.folderpopupContent}>
-//             <h3>Create New Folder</h3>
-//             <input
-//               type="text"
-//               placeholder="Enter folder name"
-//               value={newFolderName}
-//               onChange={(e) => setNewFolderName(e.target.value)}
-//               className={styles.input}
-//             />
-//             <div className={styles.buttonContainer}>
-//               <button className={styles.button1} onClick={createFolder}>
-//                 Done
-//               </button>
-//               <div className={styles.borderline}></div>
-//               <button className={styles.button2} onClick={closeFolderPopup}>
-//                 Cancel
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       )}
-
-//     {/*delete button popup*/}
-//     {isDeletePopupVisible && (
-//         <div className={styles.folderpopup}>
-//           <div className={styles.folderpopupContent}>
-//             <h3>Are you sure you want to 
-//             <span>delete this folder ?</span></h3>
-//             <div className={styles.buttonContainer}>
-//               <button className={styles.button1}>
-//                 Confirm
-//               </button>
-//               <div className={styles.borderline}></div>
-//               <button className={styles.button2} onClick={closeDeletePopup}>
-//                 Cancel
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       )}
-
-//     </div>
-//   );
-// }
-
-// export default Workspace;
-
-
---grp from with folder
-import styles from './Workspace.module.css';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import folder_img from '../../assets/folder_img.png';
-import delete_img from '../../assets/delete_img.png';
-import React from 'react';
-
-function Workspace() {
-  const [selectedValue, setSelectedValue] = useState('/workspace'); // Header dropdown
-  const [isPopupVisible, setIsPopupVisible] = useState(false); // Popup visibility state
-  const [isDarkMode, setIsDarkMode] = useState(false); // Theme toggle state
-  const [folders, setFolders] = useState([]); // Folders with forms
-  const [forms, setForms] = useState([]); // Standalone forms
-  const [isFolderPopupVisible, setIsFolderPopupVisible] = useState(false); // Folder popup visibility
-  const [isFormPopupVisible, setIsFormPopupVisible] = useState(false); // Form popup visibility
-  const [newFolderName, setNewFolderName] = useState(''); // New folder name input
-  const [newFormName, setNewFormName] = useState(''); // New form name input
-  const [selectedFolder, setSelectedFolder] = useState(null); // Folder selected for adding forms
-  const [editViewMode, setEditViewMode] = useState('edit'); // Edit/view mode
+const Response = () => {
+  const token = localStorage.getItem("token");
+  const { formId } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
+  const isDataAvailable = location.state?.isDataAvailable || false;
+  const [isShareEnabled, setIsShareEnabled] = useState(false);
+  const [isSharePopupVisible, setIsSharePopupVisible] = useState(false);
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("edit");
+  const [selectedFolder, setSelectedFolder] = useState(null);
+  const [close, setClose] = useState(false);
+  const [selected, setSelected] = useState("res");
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return localStorage.getItem("theme") === "dark";
+  });
+  const [data, setData] = useState([]);
+  const [views, setViews] = useState(0);
+  const [starts, setStarts] = useState(0);
+  const [completion, setCompletion] = useState(0);
 
-  // Handle dropdown change
-  const handleChange = (event) => {
-    const value = event.target.value;
-    setSelectedValue(value);
-    if (value) {
-      navigate(value); // Navigate to the selected dropdown value
-    }
-  };
-
-  // Toggle theme
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-    document.body.className = isDarkMode ? styles.lightTheme : styles.darkTheme; // Apply body styles
-  };
-
-  // Open folder creation popup
-  const openFolderPopup = () => {
-    setIsFolderPopupVisible(true);
-  };
-
-  // Close folder creation popup
-  const closeFolderPopup = () => {
-    setIsFolderPopupVisible(false);
-    setNewFolderName('');
-  };
-
-  // Create a new folder
-  const createFolder = () => {
-    if (newFolderName.trim()) {
-      setFolders([...folders, { name: newFolderName, forms: [] }]);
-      closeFolderPopup();
-    }
-  };
-
-  // Open form creation popup
-  const openFormPopup = (folderIndex = null) => {
-    setSelectedFolder(folderIndex);
-    setIsFormPopupVisible(true);
-  };
-
-  // Close form creation popup
-  const closeFormPopup = () => {
-    setIsFormPopupVisible(false);
-    setNewFormName('');
-    setSelectedFolder(null);
-  };
-
-  // Create a new form (standalone or under a folder)
-  const createForm = () => {
-    if (newFormName.trim()) {
-      if (selectedFolder === null) {
-        // Add as standalone form
-        setForms([...forms, newFormName]);
-      } else {
-        // Add under the selected folder
-        const updatedFolders = [...folders];
-        updatedFolders[selectedFolder].forms.push(newFormName);
-        setFolders(updatedFolders);
+  const handleClick = (type) => {
+    if (type === "flow") {
+      if (!formId) {
+        alert("Form ID is missing.");
+        return;
       }
-      closeFormPopup();
+
+      // Navigate to the response route and pass save state
+      navigate(-1);
     }
   };
 
-  // Handle edit/view mode change
-  const handleEditViewChange = (event) => {
-    setEditViewMode(event.target.value);
+  const handleSharePopupOpen = () => setIsSharePopupVisible(true);
+  const handleSharePopupClose = () =>
+    setIsSharePopupVisible(!isSharePopupVisible);
+
+  const handleShareLink = async (dashBoardId, role) => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/${dashBoardId}/shareLink`,
+        { role },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (response.status === 201) {
+        navigator.clipboard.writeText(response.data.sharingLink); // Copy link to clipboard
+        alert("Share Link copied to clipboard!");
+      }
+    } catch (error) {
+      console.error("Error creating share link:", error);
+      alert(error.response?.data?.message || "Failed to create share link.");
+    }
+  };
+
+  const handleShareEmail = async (dashBoardId, email, role) => {
+    if (!email || !role) {
+      alert("Please enter a valid email and select a role.");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/user/${dashBoardId}/shareEmail`,
+        { email, role },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (response.status === 200) {
+        alert("Email shared successfully!");
+        setEmail(""); // Clear input field
+      }
+    } catch (error) {
+      console.error("Error sharing email:", error);
+      alert(error.response?.data?.message || "Failed to share via email.");
+    }
+  };
+
+  const handleSave = async (e) => {
+    e.preventDefault();
+  };
+
+  const handleSave1 = () => {
+    setIsShareEnabled(true); // Enable the Share button
+  };
+
+  const toggleTheme = () => {
+    setIsDarkMode((prev) => {
+      const newTheme = !prev ? "dark" : "light";
+      localStorage.setItem("theme", newTheme);
+      document.documentElement.setAttribute("data-theme", newTheme);
+      return !prev;
+    });
+
+    const homeElement = document.querySelector(".header");
+    const homeElement1 = document.querySelector(".body");
+    const homeElement2 = document.querySelector(".body1");
+
+    if (homeElement) {
+      if (isDarkMode) {
+        homeElement.style.backgroundColor = "#18181b";
+        homeElement.style.color = "white";
+      } else {
+        homeElement.style.backgroundColor = "white";
+        homeElement.style.color = "black";
+      }
+    } else {
+      console.warn("Element with class 'home' not found.");
+    }
+    if (homeElement1) {
+      if (isDarkMode) {
+        homeElement1.style.backgroundColor = "#18181b";
+        homeElement1.style.color = "white";
+      } else {
+        homeElement1.style.backgroundColor = "white";
+        homeElement1.style.color = "black";
+      }
+    } else {
+      console.warn("Element with class 'home' not found.");
+    }
+    if (homeElement2) {
+      if (isDarkMode) {
+        homeElement2.style.backgroundColor = "#18181b";
+        homeElement2.style.color = "white";
+      } else {
+        homeElement2.style.backgroundColor = "white";
+        homeElement2.style.color = "black";
+      }
+    } else {
+      console.warn("Element with class 'home' not found.");
+    }
+  };
+  const handleclose = () => {
+    setClose(true);
+    if (close == true) {
+      navigate("/home");
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      // Replace this with actual backend call
+      const response = {
+        data: [
+          {
+            date: "Jul 17, 03:23 PM",
+            button1: "Hi!",
+            email: "abc@g.com",
+            text: "alpha",
+            button2: "Studio App",
+            rating: 5,
+          },
+          {
+            date: "Jul 17, 02:48 PM",
+            button1: "Hi!",
+            email: "",
+            text: "",
+            button2: "",
+            rating: 3,
+          },
+        ],
+        stats: { views: 6, starts: 100, completed: 33 },
+      };
+
+      setData(response.data);
+      setViews(response.stats.views);
+      setStarts(response.stats.starts);
+      setCompletion(response.stats.completed);
+    };
+
+    fetchData();
+  }, []);
+
+  const completionRate = starts ? Math.round((completion / starts) * 100) : 0;
+
+  const chartData = {
+    labels: ["Completed", "Remaining"],
+    datasets: [
+      {
+        data: [completion, starts - completion],
+        backgroundColor: ["#007BFF", "#D3D3D3"],
+        borderWidth: 1,
+      },
+    ],
   };
 
   return (
-    <div className={`${styles.mainContainer} ${isDarkMode ? styles.dark : styles.light}`}>
-      <div className={styles.header}>
-        {/* Dropdown */}
-        <div className={styles.dropdown}>
-          <select
-            value={selectedValue}
-            onChange={handleChange}
-            className={`${styles.select} ${isDarkMode ? styles.darkDropdown : styles.lightDropdown}`}
-          >
-            <option value="/workspace">Ram's workspace</option>
-            <option value="/settings">Settings</option>
-            <option value="/home">Log Out</option>
-          </select>
-        </div>
-
-        {/* Theme Toggle */}
-        <div className={styles.toggleContainer}>
-          <span className={styles.label}>Light</span>
+    <div className="body">
+      <div className="header">
+        <div className="cont"></div>
+        <div className="flowcont">
           <div
-            className={`${styles.toggleSwitch} ${isDarkMode ? styles.dark : styles.light}`}
-            onClick={toggleTheme}
+            className={`flow ${selected === "flow" ? "active" : ""}`}
+            onClick={() => handleClick("flow")}
           >
-            <div className={styles.toggleCircle}></div>
+            Flow
           </div>
-          <span className={styles.label}>Dark</span>
+          <div
+            className={`res ${selected === "res" ? "active" : ""}`}
+            onClick={() => handleClick("res")}
+          >
+            Response
+          </div>
         </div>
-      </div>
-
-      {/* Standalone Forms */}
-      <div className={styles.sectionContainer}>
-        <div className={styles.formCreation}>
-          <button onClick={() => openFormPopup()} className={styles.typebot}>
-            <p className={styles.text}>
-              +
-              <span>Create a Standalone Form</span>
-            </p>
-          </button>
-          <ul className={styles.formList}>
-            {forms.map((form, index) => (
-              <li key={index} className={styles.formItem}>
-                {form}
-                {editViewMode === 'edit' && (
-                  <button className={styles.deletebutton}>
-                    <img src={delete_img} alt="deleteform" className={styles.deleteImg} />
-                  </button>
-                )}
-              </li>
-            ))}
-          </ul>
+        <div className="toggle">
+          <div className="light">Light</div>
+          <ThemeToggle isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+          <div className="dark">Dark</div>
         </div>
-      </div>
+        <div className="buttonshare">
+          <div className="savenshare">
+            {/* Share Button */}
+            <button
+              className="btn"
+              style={{
+                backgroundColor: "#1a5fff",
+                cursor: "pointer",
+                color: "white",
+              }}
+              onClick={handleSharePopupOpen} // Open the share popup on click
+            >
+              Share
+            </button>
 
-      {/* Folders and Grouped Forms */}
-      <div className={styles.sectionContainer}>
-        <div className={styles.folderCreation}>
-          <button onClick={openFolderPopup} className={styles.folder}>
-            <img src={folder_img} alt="folder" className={styles.folderImg} />
-            Create a Folder
-          </button>
-          <ul className={styles.folderList}>
-            {folders.map((folder, folderIndex) => (
-              <li key={folderIndex} className={styles.folderItem}>
-                <div className={styles.folderHeader}>
-                  <span>{folder.name}</span>
-                  {editViewMode === 'edit' && (
-                    <button
-                      className={styles.addFormButton}
-                      onClick={() => openFormPopup(folderIndex)}
-                    >
-                      + Add Form
-                    </button>
-                  )}
+            {/* Share Popup */}
+            {isSharePopupVisible && (
+              <div className="sharecont">
+                <img
+                  className="close"
+                  src={closed}
+                  alt="Close"
+                  onClick={handleSharePopupClose}
+                />
+                {/* Email Sharing */}
+                <div className="emailcont">
+                  <p className="emailinv">Invite by Email</p>
+                  <select
+                    className="dd"
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
+                  >
+                    <option value="edit">Edit</option>
+                    <option value="view">View</option>
+                  </select>
                 </div>
-                <ul className={styles.formList}>
-                  {folder.forms.map((form, formIndex) => (
-                    <li key={formIndex} className={styles.formItem}>
-                      {form}
-                      {editViewMode === 'edit' && (
-                        <button className={styles.deletebutton}>
-                          <img src={delete_img} alt="deleteform" className={styles.deleteImg} />
-                        </button>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            ))}
-          </ul>
+                <input
+                  type="email"
+                  className="inputs1"
+                  value={email}
+                  placeholder="Enter email Id"
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <button
+                  className="copy"
+                  onClick={() => handleShareEmail(selectedFolder, email, role)}
+                >
+                  Send Invite
+                </button>
+
+                {/* Link Sharing */}
+                <p className="linkinv">Invite by link</p>
+                <button
+                  className="copy1"
+                  onClick={() => handleShareLink(selectedFolder, role)}
+                >
+                  Copy link
+                </button>
+              </div>
+            )}
+
+            {/* Save Button */}
+            <button
+              className="btn1"
+              onClick={() => {
+                handleSave1(); // Enable the Share button
+              }}
+            >
+              Save
+            </button>
+          </div>
+          <div
+            className="close"
+            onClick={() => {
+              handleclose();
+            }}
+          >
+            <img src={closed} alt="" />
+          </div>
         </div>
       </div>
-
-      {/* Folder Popup */}
-      {isFolderPopupVisible && (
-        <div className={styles.folderpopup}>
-          <div className={styles.folderpopupContent}>
-            <h3>Create New Folder</h3>
-            <input
-              type="text"
-              placeholder="Enter folder name"
-              value={newFolderName}
-              onChange={(e) => setNewFolderName(e.target.value)}
-              className={styles.input}
-            />
-            <div className={styles.buttonContainer}>
-              <button className={styles.button1} onClick={createFolder}>
-                Done
-              </button>
-              <div className={styles.borderline}></div>
-              <button className={styles.button2} onClick={closeFolderPopup}>
-                Cancel
-              </button>
+      <hr />
+      {isDataAvailable ? (
+        <div className="body1">
+          <div className="workspace">
+            <div className="stats-container">
+              <div className="stat">
+                Views <span>{views}</span>
+              </div>
+              <div className="stat">
+                Starts <span>{starts}</span>
+              </div>
+            </div>
+            <div className="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Submitted At</th>
+                    <th>Button 1</th>
+                    <th>Email</th>
+                    <th>Text</th>
+                    <th>Button 2</th>
+                    <th>Rating</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.map((row, index) => (
+                    <tr key={index}>
+                      <td>{row.date}</td>
+                      <td>{row.button1}</td>
+                      <td>{row.email || "-"}</td>
+                      <td>{row.text || "-"}</td>
+                      <td>{row.button2 || "-"}</td>
+                      <td>{row.rating || "-"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="completion-chart">
+              <Doughnut data={chartData} key={JSON.stringify(chartData)} />
+              <div className="chart-overlay">
+                <div className="completed-count">Completed</div>
+                <div className="completion-rate">{completion}</div>
+              </div>
+              <div className="rate1">
+                <div className="completion-rate1">
+                  {`completionRate ${completionRate}`}
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      )}
-
-      {/* Form Popup */}
-      {isFormPopupVisible && (
-        <div className={styles.folderpopup}>
-          <div className={styles.folderpopupContent}>
-            <h3>Create New Form</h3>
-            <input
-              type="text"
-              placeholder="Enter form name"
-              value={newFormName}
-              onChange={(e) => setNewFormName(e.target.value)}
-              className={styles.input}
-            />
-            <div className={styles.buttonContainer}>
-              <button className={styles.button1} onClick={createForm}>
-                Done
-              </button>
-              <div className={styles.borderline}></div>
-              <button className={styles.button2} onClick={closeFormPopup}>
-                Cancel
-              </button>
-            </div>
-          </div>
+      ) : (
+        <div className="body">
+          <p className="letssee" style={{ color: "#696969" }}>
+            No Response yet collected
+          </p>
         </div>
       )}
     </div>
   );
-}
-
-export default Workspace;
-
-//form 
-  // Function to open the form delete confirmation popup
-  const openFormDeletePopup = (index) => {
-    setIsFormDeletePopupVisible(true);
-    setSelectedFormIndex(index);
-  };
-  
-  // Function to close the form delete confirmation popup
-  const closeFormDeletePopup = () => {
-    setSelectedFormIndex(null); // Reset selected index
-    setIsFormDeletePopupVisible(false);
-  };
-  
-  //function to delete form
-  // Function to delete a file
-const deleteForm = async () => {
-  if (selectedFormIndex !== null) {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        alert("You must be logged in to delete a file.");
-        return;
-      }
-
-      const fileId = typebots[selectedFormIndex]?._id; // Safely access the file ID
-      if (!fileId) {
-        alert("File ID not found.");
-        return;
-      }
-
-      // Use DELETE method
-      const response = await axios.delete(`${API_URL}/api/user/files/${fileId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (response.status === 200) {
-        setTypebots((prevForms) => {
-          const updatedForms = prevForms.filter((_, i) => i !== selectedFormIndex);
-          return updatedForms;
-        });
-        closeFormDeletePopup();
-        alert("File deleted successfully!");
-      } else {
-        alert("Failed to delete the file. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error deleting the file:", error);
-      alert("Error deleting the file. Please try again.");
-    }
-  }
 };
+
+export default Response;

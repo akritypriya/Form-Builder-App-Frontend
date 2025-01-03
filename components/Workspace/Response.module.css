@@ -1,0 +1,170 @@
+
+.lightTheme {
+    background-color: #f5f5f5;
+    color: #000;
+  }
+  
+  .darkTheme {
+    
+    background: #1F1F23;
+    color: #fff;
+  }
+    
+    .mainContainer {
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      
+    }
+    
+    .navBar {
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      height: 50px;
+      border-bottom: 1px solid #b0b0b0;
+      background: #18181B;
+      
+  
+    }
+    .lightTheme .navBar {
+      background: #FFFFFF;
+  
+    }
+   
+    .lightTheme .flowButton {
+      background: #FFFFFF;
+  
+    }
+    .flowButton{    
+      background-color: #18181B;
+      cursor: pointer;
+      margin-left: 650px;
+      margin-right:2px; 
+    }
+    .lightTheme .responseButton {
+      background: #FFFFFF;
+      color: #000;
+     
+    }
+   
+   
+    .responseButton {   
+      background-color: #18181B;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 5px 14px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-right:240px;
+      border: 1px solid transparent; 
+      transition: border-color 0.3s ease; 
+      padding-bottom: 9px;
+      padding-top:9px;
+    }
+    .toggleContainer {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .label {
+      font-family: Open Sans;
+      color: #fff;
+    }
+    
+    .lightTheme .label {
+      color:black;
+  
+    }
+    .toggleSwitch {
+      width: 50px;
+      height: 22px;
+      background-color: #ccc;
+      border-radius: 25px;
+      display: flex;
+      align-items: center;
+      padding: 2px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    .toggleSwitch.dark {
+      background-color: #4b83ff;
+    }
+    
+    .toggleCircle {
+      width: 20px;
+      height: 20px;
+      background-color: white;
+      border-radius: 50%;
+      transition: transform 0.3s ease;
+    }
+    
+    .toggleSwitch.dark .toggleCircle {
+      transform: translateX(25px);
+    }
+    
+    .buttonGroup {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .shareButton {
+      background-color: #848890;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 4.5px 15px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+      margin-left:20px;
+    }
+    
+    .shareButton:hover {
+      background-color: #424447;
+    }
+    
+    .saveButton {
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-right:-20px;
+    }
+    
+    .saveImg:hover {
+      background-color: #4ADE80CC;
+    }
+    
+    .closeButton {
+      background: none;
+      border: none;
+      cursor: pointer;
+     
+    }
+    .linkedButton{
+        margin-left:1200px;
+        background-color:transparent;
+        border: 1px solid transparent;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: border-color 0.3s ease;
+        margin-bottom: 500px;
+    }
+
+    .sectionContainer {    
+        flex: 1; 
+        display: flex;
+        background: #1F1F23;
+        padding-top:20px;
+         
+        }
+        .lightTheme .sectionContainer{
+         background-color: white;
+         color: #000;
+        }

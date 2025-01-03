@@ -94,8 +94,8 @@ const Response = () => {
             </button>
           )}
       </div>
-      {/* <hr />
-      {isDataAvailable ? (
+      <hr />
+      {/* {isDataAvailable ? (
         <div className="body1">
           <div className="workspace">
             <div className="stats-container">
@@ -152,7 +152,7 @@ const Response = () => {
             No Response yet collected
           </p>
         </div>
-      )}*/}
+      )} */}
     </div> 
   );
 };

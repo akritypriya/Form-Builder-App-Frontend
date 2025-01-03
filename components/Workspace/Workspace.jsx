@@ -76,7 +76,7 @@ function Workspace() {
     }
   }, []);
 
-  // Handle dropdown change
+  //  dropdown change
   const handleChange = (event) => {
     const value = event.target.value;
     setSelectedValue(value);
@@ -267,7 +267,7 @@ function Workspace() {
 
   // Function to close the form delete confirmation popup
   const closeFormDeletePopup = () => {
-    setSelectedFormIndex(null); // Reset selected index
+    setSelectedFormIndex(null); 
     setIsFormDeletePopupVisible(false);
   };
 
@@ -281,7 +281,7 @@ function Workspace() {
           return;
         }
 
-        const fileId = files[selectedFormIndex]?._id; // Correctly access the file ID
+        const fileId = files[selectedFormIndex]?._id; 
         if (!fileId) {
           alert("File ID not found.");
           return;
@@ -300,7 +300,7 @@ function Workspace() {
             const updatedFiles = prevFiles.filter(
               (_, i) => i !== selectedFormIndex
             );
-            localStorage.setItem("files", JSON.stringify(updatedFiles)); // Update localStorage
+            localStorage.setItem("files", JSON.stringify(updatedFiles));
             return updatedFiles;
           });
           closeFormDeletePopup();
@@ -415,7 +415,7 @@ function Workspace() {
               type="text"
               placeholder="Enter email id"
               className={styles.input}
-              //disabled // Optional: Disable email input for demonstration
+              
             />
             <button className={styles.primaryButton} onClick={handleSendInvite}>
               Send Invite
@@ -442,7 +442,7 @@ function Workspace() {
                 className={styles.folderItem}
                 onClick={() => handleItemClick(folder._id, "folder")}
               >
-                {folder.name} {/* Display folder name */}
+                {folder.name} 
                 {editViewMode === "edit" && (
                   <button className={styles.deletebutton}>
                     <img

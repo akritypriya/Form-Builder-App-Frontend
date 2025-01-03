@@ -22,7 +22,7 @@ export default function Settings() {
 
     const { username,email, oldPassword, newPassword } = updateFormData;
 
-    // Basic frontend validation
+    
     if (!email || !oldPassword || !newPassword) {
       setError("All fields are required.");
       setSuccess("");
@@ -121,7 +121,7 @@ export default function Settings() {
           </button>
         </form>
 
-        {/* Display error or success messages */}
+        
         {error && <div className={styles.error}>{error}</div>}
         {success && <div className={styles.success}>{success}</div>}
       </div>

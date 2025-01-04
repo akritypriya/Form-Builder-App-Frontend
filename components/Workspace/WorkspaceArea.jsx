@@ -38,7 +38,7 @@ function WorkspaceArea() {
 
     try {
       const response = await axios.post(
-        `http://localhost:3000/api/user/workspace/save`,
+        "https://form-builder-app-backend-gg20.onrender.com/api/user/workspace/save",
         workspaceData,
         {
             headers: {
@@ -59,7 +59,7 @@ function WorkspaceArea() {
    //Toggle theme
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
-    document.body.className = isDarkMode ? styles.lightTheme : styles.darkTheme;  //Apply body styles
+    document.body.className = isDarkMode ? styles.lightTheme : styles.darkTheme;  
   };
 
    //Handle adding a new element with bubble input textbox

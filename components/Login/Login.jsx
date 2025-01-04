@@ -11,7 +11,7 @@ import triangle from "../../assets/triangle.png";
 export default function Login() {
   const navigate = useNavigate();
 
-  //Redirect user if already logged in
+ 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {

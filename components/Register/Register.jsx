@@ -6,7 +6,7 @@ import down_ellipse from "../../assets/down_ellipse.png";
 import Google_Icon from "../../assets/Google_Icon.svg";
 import side_ellipse from "../../assets/side_ellipse.png";
 import triangle from "../../assets/triangle.png";
-
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -17,42 +17,45 @@ export default function Register() {
   });
 
   const [error, setError] = useState("");
-  const [formSubmitted, setFormSubmitted] = useState(false); // New state to track form submission
-  
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const navigate = useNavigate(); 
+
   const handleRegister = async (e) => {
     e.preventDefault();
     setFormSubmitted(true); // Set form submission to true
-
-    const { username, email, password, confirmPassword } = formData;
-
+  
+    const { password, confirmPassword } = formData;
+  
     // Password match validation
     if (password !== confirmPassword) {
-      setError("enter same password in both fields");
-
+      setError("Enter the same password in both fields");
       return;
     }
-    
+  
     try {
       const res = await register(formData);
-
+  
       if (res.status === 200) {
-        alert("Registered successfully");
+        alert("Registered successfully");  // Show alert for success
         setFormData({
           username: "",
           email: "",
           password: "",
           confirmPassword: "",
-        }); 
-     
-        //setError("");
-              
-      
+        });
+        setError(""); // Clear any existing error message
+        
+        // Immediately navigate to login page after success
+        navigate("/login");
       } else {
-        setError(res.data.message || "Registration failed");
+        const errorMessage = res?.message || "Registration failed";
+        setError(errorMessage);
       }
     } catch (err) {
-      console.error(err);
-      setError("An error occurred. Please try again.");
+      console.error("Error in handleRegister:", err);
+      const errorMessage =
+        err?.message || "An error occurred. Please try again.";
+      setError(errorMessage);
     }
   };
   

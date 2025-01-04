@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import folder_img from "../../assets/folder_img.png";
 import delete_img from "../../assets/delete_img.png";
 import axios from "axios";
-const API_URL = "http://localhost:3000";
+const API_URL = "https://form-builder-app-backend-gg20.onrender.com";
 
 function Workspace() {
   const [isPopupVisible, setIsPopupVisible] = useState(false); // Popup visibility state

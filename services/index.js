@@ -1,14 +1,19 @@
-const URL = 'http://localhost:3000/api'
-//register
+const URL = 'https://form-builder-app-backend-gg20.onrender.com/api';
+
+// Register
 export const register = (data) => {
-    return fetch(`${URL}/user/register`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    })
-}
+   
+       return fetch(`${URL}/user/register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+
+};
+
+
 
 //login
 export const login = (data) => {

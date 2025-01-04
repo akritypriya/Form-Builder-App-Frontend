@@ -98,7 +98,7 @@
     
   }
   
-  .lightTheme .label {
+  .lightTheme .wlabel {
     
     color:black;
 
@@ -197,7 +197,7 @@
   width: 250px;
   background: #18181B; 
   padding:20px;
-  border: 1px solid #FFFFFF29;
+  border: 3px solid #FFFFFF29;
 border-radius: 5px ;
   }
   
@@ -216,10 +216,16 @@ border-radius: 5px ;
   
   .lightTheme .BubblesButton{
     background-color:  white;
-    
+    color:black;
   }
   .lightTheme .inputsButton{
     background-color:  white;
+    color:#000;
+    
+  }
+  .lightTheme .textBox{
+    background-color:  white;
+    color:#000;
     
   }
   .BubblesButton, .inputsButton {
